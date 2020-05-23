@@ -1,4 +1,5 @@
-use rsat::common::*;
+use rsat::Lit;
+use rsat::Solution;
 
 struct Sudoku {
     grid: [[u32; 9]; 9],
@@ -31,7 +32,7 @@ impl std::fmt::Display for Sudoku {
 
 impl Sudoku {
     fn new(grid: [[u32; 9]; 9]) -> Self {
-        let mut solver = rsat::msat::Solver::new();
+        let mut solver = rsat::msat::Solver::new(rsat::msat::SolverOptions::default());
         let mut lits = [[[Lit::new(0, false); 9]; 9]; 9];
 
         for lits_i in &mut lits {
@@ -104,7 +105,7 @@ impl Sudoku {
                     }
                 }
             }
-            Solution::Unsat | Solution::Best(_) => panic!("Couldn't solve!"),
+            Solution::Unsat | Solution::Unknown | Solution::Best(_) => panic!("Couldn't solve!"),
         }
     }
 }
